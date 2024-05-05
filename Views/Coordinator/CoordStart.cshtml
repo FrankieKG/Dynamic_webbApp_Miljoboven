@@ -1,0 +1,67 @@
+﻿@{
+	Layout = "_CoordinatorLayout";
+}
+
+@model IRepository 
+
+
+<h2>Ärenden</h2>
+<p class="info">Du är inloggad som samordnare</p>
+
+<table id="managerForm">
+	<tr>
+		<td class="label">Välj status:</td>
+		<td class="label">Välj avdelning:</td>
+		<td>&nbsp;</td>
+		<td class="label">Ärendenummer:</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>	
+		<td>
+			<select name="status">
+				<option selected="selected">Välj alla</option>
+				@*Fyller dropdownmeny med status alternativ för ärendet, hämta status från status tabellen*@
+				@foreach(ErrandStatus status in Model.ErrandStatuses)
+				{
+					<option>@status.StatusName</option>
+				}		
+			</select>
+		</td>
+		<td>
+			<select name="department">
+				<option selected="selected">Välj alla</option>
+				@*Fyller dropdownmeny med avdelningsnamn*@ 
+				@foreach (Department dep in Model.Departments)
+				{
+					<option>@dep.DepartmentName</option>
+				}
+			</select>
+		</td>
+		<td><input class="button" type="submit" value="Hämta lista" /></td>
+		<td><input name="casenumber" /></td>
+		<td><input class="button" type="submit" value="Sök" /></td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>Ärende anmält</th>
+		<th>Ärendenummer</th>
+		<th>Miljöbrott</th>
+		<th>Status</th>
+		<th>Avdelning</th>
+		<th>Handläggare</th>
+	</tr>
+	@*Fyller tabell med data från ErrandList som innehåller data inom ramarna för samordnarens åtkomst*@ 
+	@foreach (MyErrand Errands in ViewBag.ErrandList)
+	{
+		<tr>
+			<td>@Errands.DateOfObservation.ToShortDateString()</td>
+			<td><a asp-controller="Coordinator" asp-action="CoordCrime" asp-route-id="@Errands.ErrandId">@Errands.RefNumber</a></td>
+			<td>@Errands.TypeOfCrime</td>
+			<td>@Errands.StatusName</td>
+			<td>@Errands.DepartmentName</td>
+			<td>@Errands.EmployeeName</td>
+		</tr>
+	}
+</table>

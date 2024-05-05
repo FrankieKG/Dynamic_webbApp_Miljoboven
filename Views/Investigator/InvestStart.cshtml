@@ -1,0 +1,56 @@
+﻿
+@{
+	Layout = "_InvestigatorLayout";
+}
+
+@model IRepository
+
+<h2>Ärenden</h2>
+<p class="info">Du är inloggad som handläggare</p>
+
+<table id="managerForm">
+	<tr>
+		<td class="label">Välj status:</td>
+		<td>&nbsp;</td>
+		<td class="label">Ärendenummer:</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+			<select name="status">
+				<option selected="selected">Välj alla</option>
+				@*Fyller dropdown meny med statusar, hämta status från status tabellen*@
+				@foreach(ErrandStatus status in Model.ErrandStatuses)
+				{
+					<option>@status.StatusName</option>
+				}
+			</select>
+		</td>
+		<td><input class="button" type="submit" value="Hämta lista" /></td>
+		<td><input name="casenumber" /></td>
+		<td><input class="button" type="submit" value="Sök" /></td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>Ärende anmält</th>
+		<th>Ärendenummer</th>
+		<th>Miljöbrott</th>
+		<th>Status</th>
+		<th>Avdelning</th>
+		<th>Handläggare</th>
+	</tr>
+	@*Fyller en tabell med data om ärenden inom ramarna för handläggarens åtkomsträttigheter*@
+	@foreach (MyErrand errand in ViewBag.ErrandList)
+	{
+		<tr>
+			<td>@errand.DateOfObservation.ToShortDateString()</td>
+			<td><a asp-controller="Investigator" asp-action="InvestCrime" asp-route-id="@errand.ErrandId">@errand.RefNumber</a></td>
+			<td>@errand.TypeOfCrime</td>
+			<td>@errand.StatusName</td>
+			<td>@errand.DepartmentName</td>
+			<td>@errand.EmployeeName</td>
+		</tr>
+	}
+</table>

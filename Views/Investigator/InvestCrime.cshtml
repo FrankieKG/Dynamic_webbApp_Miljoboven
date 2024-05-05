@@ -1,0 +1,36 @@
+﻿@{
+	Layout = "_InvestigatorLayout";
+}
+
+@model IEnumerable<ErrandStatus>
+
+<h2>Detaljer för ärendet</h2>
+<p class="info">Du är inloggad som handläggare</p>
+@await Component.InvokeAsync("ShowOneCrime", ViewBag.ID)
+
+@*Förändringar som handläggare kan göra med ett specifikt ärende*@
+<section id="bottomColumn">
+	<form asp-controller="Investigator" asp-action="InvestSave" method="post" enctype="multipart/form-data">
+	<h3>Redigera ärende</h3>
+	<p class="label">Händelser:</p>
+	<textarea id="eventsText" name="events" rows="5" cols="60"></textarea>
+	<p class="label">Mer information:</p>
+	<textarea id="informationText" name="information" rows="5" cols="60"></textarea>	
+	<p class="label">Prover:</p>
+	<input type="file" name="loadSample" />
+	<p class="label"><a href="~/../Picture/@ViewBag.PictureName">@ViewBag.PictureName</a>Ladda upp bilder:</p>
+	<input type="file" name="loadImage" />
+	<p class="label">Ändring av status:</p>
+	<select id="statusid" name="status">
+	<option selected="selected">Välj</option>
+	@*Fyller dropdown meny för statusar*@
+		@foreach(ErrandStatus status in Model)
+		{
+			<option>@status.StatusName</option>
+		}
+	</select>
+	<p>
+		<input class="button" type="submit" value="Spara ändringarna" />
+	</p>
+	</form>
+</section>

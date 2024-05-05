@@ -1,0 +1,71 @@
+﻿@{
+	Layout = "_ManagerLayout";
+}
+
+@model IRepository
+
+<h2>Ärenden</h2>
+<p class="info">Du är inloggad som avdelningschef</p>
+
+<table id="managerForm">
+	<tr>
+		<td class="label">Välj status:</td>
+		<td class="label">Välj handläggare:</td>
+		<td>&nbsp;</td>
+		<td class="label">Ärendenummer:</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+			<select name="status">
+				<option selected="selected">Välj alla</option>
+				@*Fyller dropdown meny med statusar från status tabellen*@
+				@foreach (ErrandStatus status in Model.ErrandStatuses)
+				{
+					<option>@status.StatusName</option>
+				}
+
+			</select>
+		</td>
+		<td>
+			<select name="investigator">
+				<option selected="selected">Välj alla</option>
+				@*Fyller dropdown meny med namn av anställda, samma avdelning som chefen*@
+				@foreach(Employee emp in Model.Employees)
+				{
+					if((emp.DepartmentId ==ViewBag.Department) && (emp.EmployeeId != ViewBag.UserName))
+					{
+					<option>@emp.EmployeeName</option>
+					}
+				}
+
+			</select>
+		</td>
+		<td><input class="button" type="submit" value="Hämta lista" /></td>
+		<td><input name="casenumber" /></td>
+		<td><input class="button" type="submit" value="Sök" /></td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>Ärende anmält</th>
+		<th>Ärendenummer</th>
+		<th>Miljöbrott</th>
+		<th>Status</th>
+		<th>Avdelning</th>
+		<th>Handläggare</th>
+	</tr>
+	@*Fyller tabell med data om ärenden som är inom ramarna för den specifika chefens åtkomst rättigheter*@
+	@foreach (MyErrand Errands in ViewBag.ErrandList)
+	{
+		<tr>
+			<td>@Errands.DateOfObservation.ToShortDateString()</td>
+			<td><a asp-controller="Manager" asp-action="ManagCrime" asp-route-id="@Errands.ErrandId">@Errands.RefNumber</a></td>
+			<td>@Errands.TypeOfCrime</td>
+			<td>@Errands.StatusName</td>
+			<td>@Errands.DepartmentName</td>
+			<td>@Errands.EmployeeName</td>
+		</tr>
+	}
+</table>

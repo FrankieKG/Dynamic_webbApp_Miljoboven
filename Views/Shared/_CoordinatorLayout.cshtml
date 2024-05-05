@@ -1,0 +1,14 @@
+﻿@{
+	Layout = "_MainLayout";
+}
+<nav>
+	<ul>
+		<li><a class="reports" asp-controller="Coordinator" asp-action="CoordStart">Start(Ärenden)</a></li>
+		<li><a class="reportAdd" asp-controller="Coordinator" asp-action="CoordReport">Rapportera brott</a></li>
+		<li class="right"><a class="logout" asp-controller="Home" asp-action="Logout">Logga ut</a></li>
+	</ul>
+</nav>
+
+<div id="content">
+
+@RenderBody()

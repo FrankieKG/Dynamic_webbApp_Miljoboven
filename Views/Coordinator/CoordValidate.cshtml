@@ -1,0 +1,9 @@
+﻿@{
+	Layout = "_CoordinatorLayout";
+}
+@*Visar inehållet för viewcomponent ShowValidate med ärende data från den tidigare vyn*@
+@await Component.InvokeAsync("ShowValidate", ViewBag.errand)
+
+<p>
+	<a class="button" asp-controller="Coordinator" asp-action="CoordReport" id="link">Tillbaka</a> <a class="button" asp-controller="Coordinator" asp-action="CoordThanks">Bekräfta</a>
+</p>

@@ -1,0 +1,7 @@
+﻿@{
+	Layout = "_CitizenLayout";
+}
+@*Visar inehållet från viewcomponent ShowValidat*@
+@await Component.InvokeAsync("ShowValidate", ViewBag.errand)
+
+<p><a class="button" asp-controller="Home" asp-action="Index" id="link">Tillbaka</a> <a class="button" asp-controller="Citizen" asp-action="Thanks">Bekräfta</a></p>

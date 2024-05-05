@@ -1,0 +1,34 @@
+﻿@{
+	Layout = "_ManagerLayout";
+}
+
+@model IEnumerable<Employee>
+
+
+<h2>Detaljer för ärendet</h2>
+<p class="info">Du är inloggad som avdelningschef</p>
+@*Visar inehållet från viewcomponent vyn ShowOneCrime med data av ett specifikt ärende*@
+@await Component.InvokeAsync("ShowOneCrime", ViewBag.ID)
+
+@*Åtgärder som chefen kan uföra för ett specifikt ärende*@
+<section id="bottomColumn">
+	<h3>Redigera ärende</h3>
+	<form asp-controller="Manager" asp-action="ManagSave" method="post">
+	<p>
+		Ange handläggare:
+		<select  id="MId"  name="investigator">
+			<option selected="selected">Välj</option>
+			@*Fyller dropdown meny med namn av anställda, ska vara anställda på samma avdelning*@
+				@foreach (Employee emp in Model)
+				{
+					if ((emp.DepartmentId == ViewBag.Department) && (emp.EmployeeId != ViewBag.UserName))
+					{
+						<option>@emp.EmployeeName</option>
+					}
+				}
+		</select>
+	</p>
+	<p><input type="checkbox" name="noAction" value="true" /> Ingen åtgärd: <input type="text" name="reason" value="Ange motivering" /></p>
+	<p><input class="button" type="submit" value="Spara" /></p>
+	</form>
+</section>

@@ -1,0 +1,32 @@
+﻿@{
+	Layout = "_CoordinatorLayout";
+}
+
+@model IEnumerable<Department>
+
+
+<h2>Detaljer för ärendet</h2>
+<p class="info">Du är inloggad som samordnare</p>
+@*Visar inehållet av Viewcomponent ShowOneCrime*@
+@await Component.InvokeAsync("ShowOneCrime", ViewBag.ID)
+<section id="bottomColumn">
+	<h3>Redigera ärende</h3>
+	<form asp-controller="Coordinator" asp-action="CoordSave" method="post">
+	<p>
+		Ange enhet:
+		<select id="dd"  name="choosenDepartment">
+			<option selected="selected">Välj</option>
+			@*Fyller dropdown menyn med avdelningsnamn*@
+			@foreach(Department dep in Model)
+			{
+				if (dep.DepartmentName == "Småstads kommun")
+				{
+					continue;
+				}
+				<option value="@dep.DepartmentId">@dep.DepartmentName</option>
+			}
+		</select>
+	</p>
+	<p><input class="button" type="submit" value="Spara" /></p>
+	</form>
+</section>
